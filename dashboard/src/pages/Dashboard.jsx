@@ -1,18 +1,26 @@
 import { useEffect, useState } from 'react';
+import React from 'react';
 import Sidebar from '../components/Sidebar';
 import InfoCard from '../components/InfoCard';
 import StatusCard from '../components/StatusCard';
-import CO2LineChart from '../components/LineChart';
+import Co2LineChart from '../components/Co2LineChart';
+import TemperatureLineChart from '../components/TemperatureLineChart';
 import StatusPieChart from '../components/PieChart';
+import HumidityLineChart from '../components/HumidityLineChart';
 import mqtt from 'mqtt';
 import axios from 'axios';
-
 
 export default function Dashboard() {
   const [time, setTime] = useState(() => new Date().toLocaleTimeString());
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [locationError, setLocationError] = useState(null);
 
+  // Static alert data
+  const staticRows = [
+    { timestamp: '2025-05-02T12:10:45.477Z', co2: 144, pm25: 12, pm10: 20, temperature: 24, humidity: 22 },
+    { timestamp: '2025-05-02T12:10:47.552Z', co2: 147, pm25: 15, pm10: 22, temperature: 25, humidity: 23 },
+    { timestamp: '2025-05-02T12:10:49.947Z', co2: 139, pm25: 10, pm10: 18, temperature: 23, humidity: 21 },
+  ];
 
   // Sensor data state
   const [metrics, setMetrics] = useState({
@@ -23,7 +31,6 @@ export default function Dashboard() {
     humidity: 0,
   });
 
-  // try
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -57,7 +64,6 @@ export default function Dashboard() {
       setLocationError("Geolocation is not supported by this browser.");
     }
   }, []);
-  // try 
 
   useEffect(() => {
     const client = mqtt.connect('wss://test.mosquitto.org:8081');
@@ -91,8 +97,6 @@ export default function Dashboard() {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
 
-
-
     return () => {
       clearInterval(interval);
       client.end();
@@ -122,10 +126,17 @@ export default function Dashboard() {
     };
   };
 
-  // 🔴 New: check if any metric exceeds threshold
   const isAnyDanger = Object.keys(metrics).some(
     (key) => metrics[key] > thresholds[key]
   );
+
+  useEffect(() => {
+    if (isAnyDanger) {
+      const utter = new window.SpeechSynthesisUtterance('Danger, Stay Alert');
+      window.speechSynthesis.cancel(); // Stop any previous speech
+      window.speechSynthesis.speak(utter);
+    }
+  }, [isAnyDanger]);
 
   return (
     <div className="flex font-sans bg-black text-white min-h-screen">
@@ -136,7 +147,6 @@ export default function Dashboard() {
           <p className="text-gray-400 text-sm">📍 Chennai &nbsp; | &nbsp; 🕛 Time: {time}</p>
         </header>
 
-        {/* 🆕 StatusCard receives danger state */}
         <StatusCard isDanger={isAnyDanger} />
 
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
@@ -180,16 +190,20 @@ export default function Dashboard() {
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
           <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
             <h3 className="text-2xl font-semibold mb-4 text-white">📈 CO₂ Over Time</h3>
-            <CO2LineChart />
+            <Co2LineChart />
           </div>
 
           <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
-            <h3 className="text-2xl font-semibold mb-4 text-white">📊 Status Summary</h3>
-            <StatusPieChart />
+            <h3 className="text-2xl font-semibold mb-4 text-white">🌡️ Temperature Over Time</h3>
+            <TemperatureLineChart />
+          </div>
+
+          <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
+            <h3 className="text-2xl font-semibold mb-4 text-white">💧 Humidity Over Time</h3>
+            <HumidityLineChart />
           </div>
         </section>
       </div>
     </div>
   );
 }
-
