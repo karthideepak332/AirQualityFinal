@@ -1,11 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaTachometerAlt, FaExclamationCircle, FaMap, FaCog } from 'react-icons/fa';
+import { FaTachometerAlt, FaExclamationCircle, FaMap, FaCog, FaTrophy } from 'react-icons/fa';
 import React from 'react';
 
 const links = [
   { to: '/',   label: 'Dashboard', icon: FaTachometerAlt, color: 'text-cyan-400' },
   { to: '/alerts', label: 'Alerts',    icon: FaExclamationCircle, color: 'text-yellow-400' },
   { to: '/map',    label: 'Map',       icon: FaMap, color: 'text-green-400' },
+  { to: '/rewards', label: 'Rewards', icon: FaTrophy, color: 'text-orange-400' },
   { to: '/settings', label: 'Settings', icon: FaCog, color: 'text-pink-400' },
 ];
 

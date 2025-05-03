@@ -157,7 +157,7 @@ export default function Dashboard() {
       <div className="flex-1 p-8 overflow-y-auto bg-black">
         <header className="mb-8">
           <h2 className="text-4xl font-bold mb-1 text-white drop-shadow">Air Quality Dashboard</h2>
-          <p className="text-gray-400 text-sm">📍 Chennai &nbsp; | &nbsp; 🕛 Time: {time}</p>
+          <p className="text-gray-400 text-sm">📍 Covai &nbsp; | &nbsp; 🕛 Time: {time}</p>
         </header>
 
         <StatusCard isDanger={isAnyDanger} />
