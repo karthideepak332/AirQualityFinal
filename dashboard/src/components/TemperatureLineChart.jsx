@@ -18,9 +18,7 @@ export default function TemperatureLineChart() {
   useEffect(() => {
     axios.get('http://localhost:5000/api/data')
       .then(res => {
-        // Sort data by timestamp ascending
         const sorted = [...res.data].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-        // Improved filter: include one point every 1 minute based on last included timestamp
         const filtered = [];
         let lastTime = null;
         sorted.forEach(row => {
@@ -30,7 +28,6 @@ export default function TemperatureLineChart() {
             lastTime = currTime;
           }
         });
-        // Only use the last 50 data points
         setData(filtered.slice(-50));
         setLoading(false);
       })
@@ -52,7 +49,7 @@ export default function TemperatureLineChart() {
           <RechartsLineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#ffe4e6" />
             <XAxis dataKey="timestamp" stroke="#f43f5e" tick={{ fontSize: 13 }} />
-            <YAxis stroke="#f43f5e" tick={{ fontSize: 13 }} label={{ value: 'Temperature (°C)', angle: -90, position: 'insideLeft', fill: '#f43f5e', fontSize: 12 }} domain={[50, 60]} />
+            <YAxis stroke="#f43f5e" tick={{ fontSize: 13 }} label={{ value: 'Temperature (°C)', angle: -90, position: 'insideLeft', fill: '#f43f5e', fontSize: 12 }} />
             <Tooltip
               contentStyle={{ backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: '10px', border: '1px solid #fda4af' }}
               labelStyle={{ color: '#f43f5e', fontWeight: '500' }}
