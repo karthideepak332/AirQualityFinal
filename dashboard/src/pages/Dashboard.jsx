@@ -14,6 +14,8 @@ export default function Dashboard() {
   const [time, setTime] = useState(() => new Date().toLocaleTimeString());
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [locationError, setLocationError] = useState(null);
+  const [hasSpoken, setHasSpoken] = useState(false);
+  const [alertIntervalId, setAlertIntervalId] = useState(null);
 
   // Static alert data
   const staticRows = [
@@ -107,7 +109,7 @@ export default function Dashboard() {
     co2: 200,
     pm25: 35,
     pm10: 50,
-    temperature: 35,
+    temperature: 30,
     humidity: 70,
   };
 
@@ -132,11 +134,22 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (isAnyDanger) {
-      const utter = new window.SpeechSynthesisUtterance('Danger, Stay Alert');
-      window.speechSynthesis.cancel(); // Stop any previous speech
-      window.speechSynthesis.speak(utter);
+      if ('speechSynthesis' in window && !alertIntervalId) {
+        const speak = () => {
+          window.speechSynthesis.cancel();
+          const utter = new window.SpeechSynthesisUtterance('Danger, Stay Alert');
+          window.speechSynthesis.speak(utter);
+        };
+        speak();
+        const id = setInterval(speak, 3000);
+        setAlertIntervalId(id);
+      }
+    } else if (alertIntervalId) {
+      clearInterval(alertIntervalId);
+      setAlertIntervalId(null);
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     }
-  }, [isAnyDanger]);
+  }, [isAnyDanger, alertIntervalId]);
 
   return (
     <div className="flex font-sans bg-black text-white min-h-screen">
