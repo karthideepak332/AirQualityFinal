@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaTachometerAlt, FaExclamationCircle, FaMap, FaCog, FaTrophy } from 'react-icons/fa';
+import { FaTachometerAlt, FaExclamationCircle, FaMap, FaCog, FaTrophy, FaLeaf } from 'react-icons/fa';
 import React from 'react';
 
 const links = [
@@ -7,6 +7,7 @@ const links = [
   { to: '/alerts', label: 'Alerts',    icon: FaExclamationCircle, color: 'text-yellow-400' },
   { to: '/map',    label: 'Map',       icon: FaMap, color: 'text-green-400' },
   { to: '/rewards', label: 'Rewards', icon: FaTrophy, color: 'text-orange-400' },
+  { to: '/carbon', label: 'Carbon Footprint Tracker', icon: FaLeaf, color: 'text-lime-400' },
   { to: '/settings', label: 'Responses', icon: FaCog, color: 'text-pink-400' },
 ];
 

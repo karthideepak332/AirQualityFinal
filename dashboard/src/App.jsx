@@ -4,6 +4,7 @@ import Heatmap from './components/map';
 import AlertsTable from './components/AlertsTable';
 import Settings from './pages/Settings';
 import Rewards from './pages/Rewards';
+import CarbonFootprint from './pages/CarbonFootprint';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/alerts" element={<AlertsTable />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/rewards" element={<Rewards />} />
+        <Route path="/carbon" element={<CarbonFootprint />} />
       </Routes>
     </Router>
   );

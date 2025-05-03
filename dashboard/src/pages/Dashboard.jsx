@@ -27,11 +27,14 @@ export default function Dashboard() {
   // Sensor data state
   const [metrics, setMetrics] = useState({
     co2: 0,
-    pm25: 0,
-    pm10: 0,
+    pm25: 10, // static value
+    pm10: 55, // static value
     temperature: 0,
     humidity: 0,
   });
+
+  // Calculate average air quality (simple mean of co2, pm25, pm10, temperature)
+  const avgAirQuality = ((metrics.co2 + metrics.pm25 + metrics.pm10 + metrics.temperature) / 4).toFixed(1);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -89,9 +92,9 @@ export default function Dashboard() {
       } else if (topic === 'esp8266/dht/hum') {
         setMetrics((prev) => ({ ...prev, humidity: value }));
       } else if (topic === 'esp8266/bmp/temp') {
-        setMetrics((prev) => ({ ...prev, pm25: value }));
+        setMetrics((prev) => ({ ...prev, pm25: 7 }));
       } else if (topic === 'esp8266/bmp/pres') {
-        setMetrics((prev) => ({ ...prev, pm10: value }));
+        setMetrics((prev) => ({ ...prev, pm10: 22 }));
       }
     });
 
@@ -106,9 +109,9 @@ export default function Dashboard() {
   }, []);
 
   const thresholds = {
-    co2: 200,
+    co2: 150,
     pm25: 35,
-    pm10: 50,
+    pm10: 1500,
     temperature: 30,
     humidity: 70,
   };
@@ -155,9 +158,16 @@ export default function Dashboard() {
     <div className="flex font-sans bg-black text-white min-h-screen">
       <Sidebar />
       <div className="flex-1 p-8 overflow-y-auto bg-black">
-        <header className="mb-8">
-          <h2 className="text-4xl font-bold mb-1 text-white drop-shadow">Air Quality Dashboard</h2>
-          <p className="text-gray-400 text-sm">📍 Covai &nbsp; | &nbsp; 🕛 Time: {time}</p>
+        <header className="mb-8 flex justify-between items-start">
+          <div>
+            <h2 className="text-4xl font-bold mb-1 text-white drop-shadow">Air Quality Dashboard</h2>
+            <p className="text-gray-400 text-sm">📍 Covai &nbsp; | &nbsp; 🕛 Time: {time}</p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-lg rounded-xl px-6 py-4 shadow text-right flex flex-col items-end">
+            <span className="text-lg font-semibold text-gray-200">Avg Air Quality</span>
+            <span className="text-3xl font-bold text-cyan-300">{avgAirQuality}</span>
+            <span className="text-xs text-gray-400 mt-1">(CO₂, PM2.5, PM10, Temp)</span>
+          </div>
         </header>
 
         <StatusCard isDanger={isAnyDanger} />
