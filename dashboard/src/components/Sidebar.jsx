@@ -7,7 +7,7 @@ const links = [
   { to: '/alerts', label: 'Alerts',    icon: FaExclamationCircle, color: 'text-yellow-400' },
   { to: '/map',    label: 'Map',       icon: FaMap, color: 'text-green-400' },
   { to: '/rewards', label: 'Rewards', icon: FaTrophy, color: 'text-orange-400' },
-  { to: '/settings', label: 'Settings', icon: FaCog, color: 'text-pink-400' },
+  { to: '/settings', label: 'Responses', icon: FaCog, color: 'text-pink-400' },
 ];
 
 export default function Sidebar() {
