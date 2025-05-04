@@ -5,6 +5,9 @@ const staticRows = [
   { timestamp: '2025-05-02T12:10:45.477Z', co2: 204, pm25: 12, pm10: 20, temperature: 30, humidity: 22 },
   { timestamp: '2025-05-02T12:10:47.552Z', co2: 213, pm25: 15, pm10: 22, temperature: 29, humidity: 23 },
   { timestamp: '2025-05-02T12:10:49.947Z', co2: 209, pm25: 10, pm10: 18, temperature: 33, humidity: 21 },
+  { timestamp: '2025-05-02T12:13:49.947Z', co2: 211, pm25: 10, pm10: 18, temperature: 33, humidity: 21 },
+  { timestamp: '2025-05-02T12:14:49.947Z', co2: 180, pm25: 10, pm10: 18, temperature: 33, humidity: 21 },
+  { timestamp: '2025-05-02T12:15:05.947Z', co2: 200, pm25: 10, pm10: 18, temperature: 28, humidity: 21 },
 ];
 
 export default function AlertsTable() {
